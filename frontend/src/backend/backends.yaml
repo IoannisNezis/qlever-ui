@@ -1193,4 +1193,3 @@
       GROUP BY ?qlue_ls_entity
       ORDER BY DESC(?qlue_ls_count)
       LIMIT {{ limit }} OFFSET {{ offset }}
-
