@@ -73,10 +73,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "backend",
     "import_export",
+    "corsheaders",
     "rest_framework",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -86,6 +88,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 CSRF_TRUSTED_ORIGINS = env.list(
     "QLEVERUI_CSRF_TRUSTED_ORIGINS", default=["https://*.uni-freiburg.de"]
