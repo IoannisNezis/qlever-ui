@@ -1,35 +1,37 @@
-import type { MonacoSettings, Settings } from "../types/settings";
+import type { MonacoSettings, Settings } from '../types/settings';
 import { initVimMode } from 'monaco-vim';
-import { editor } from "monaco-editor";
+import { editor } from 'monaco-editor';
 import yaml from 'yaml';
-import qlue_ls_config from "../../qlue-ls.yaml?raw";
-import { LanguageClientWrapper } from "monaco-languageclient/lcwrapper";
-import { EditorApp } from "monaco-languageclient/editorApp";
-import { MonacoLanguageClient } from "monaco-languageclient";
+import qlue_ls_config from '../../qlue-ls.yaml?raw';
+import { LanguageClientWrapper } from 'monaco-languageclient/lcwrapper';
+import { EditorApp } from 'monaco-languageclient/editorApp';
+import { MonacoLanguageClient } from 'monaco-languageclient';
 
 export function setup_settings(editorApp: EditorApp, languageClient: MonacoLanguageClient) {
   let vimMode;
   const settings: Settings = yaml.parse(qlue_ls_config);
 
   // NOTE:fetch default settings or apply stored settings
-  const storedQlueLsSettings = localStorage.getItem("Qlue-ls settings");
+  const storedQlueLsSettings = localStorage.getItem('Qlue-ls settings');
   if (storedQlueLsSettings) {
     initialize_ui(JSON.parse(storedQlueLsSettings));
-    languageClient.sendNotification("qlueLs/changeSettings", JSON.parse(storedQlueLsSettings))
+    languageClient
+      .sendNotification('qlueLs/changeSettings', JSON.parse(storedQlueLsSettings))
       .catch((err) => {
         console.error('Error during changeSettings: ', err);
       });
   } else {
     initialize_ui(settings);
-    languageClient.sendNotification("qlueLs/changeSettings", settings)
+    languageClient
+      .sendNotification('qlueLs/changeSettings', settings)
       .then(() => {
-        localStorage.setItem("Qlue-ls settings", JSON.stringify(settings));
+        localStorage.setItem('Qlue-ls settings', JSON.stringify(settings));
       })
       .catch((err) => {
         console.error('Error during changeSettings: ', err);
       });
-  };
-  const storedMonacoSettings = localStorage.getItem("Monaco settings");
+  }
+  const storedMonacoSettings = localStorage.getItem('Monaco settings');
   // if (storedMonacoSettings) {
   //   const moacoSettings = JSON.parse(storedMonacoSettings) as MonacoSettings;
   //   setBoolValue("vimMode", moacoSettings.vimMode)
@@ -119,15 +121,14 @@ function initialize_ui(settings: Settings) {
   // setBoolValue("removeUnused", settings.prefixes.removeUnused);
 }
 
-
 function setBoolValue(id: string, value: boolean) {
   const checkbox = document.getElementById(id) as HTMLInputElement;
-  return checkbox.checked = value;
+  return (checkbox.checked = value);
 }
 
 function setNumValue(id: string, value: number) {
   const checkbox = document.getElementById(id) as HTMLInputElement;
-  return checkbox.valueAsNumber = value;
+  return (checkbox.valueAsNumber = value);
 }
 
 function getBoolValue(id: string): boolean {

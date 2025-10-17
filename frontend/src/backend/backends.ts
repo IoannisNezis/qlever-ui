@@ -10,24 +10,29 @@ import type { EditorAndLanguageClient } from '../types/monaco';
 import { MonacoLanguageClient } from 'monaco-languageclient';
 
 export async function configure_backends(editorAndLanguageClient: EditorAndLanguageClient) {
-  const backendSelector = document.getElementById("backendSelector") as HTMLSelectElement;
-  const backends = await fetch("http://127.0.0.1:8000/api/backends/")
-    .then(response => {
+  const backendSelector = document.getElementById('backendSelector') as HTMLSelectElement;
+  const backends = await fetch('http://127.0.0.1:8000/api/backends/')
+    .then((response) => {
       if (!response.ok) {
-        throw new Error(`Error while fetching backends:\nstatus: ${response.status}\nmessage: ${response.statusText}`);
+        throw new Error(
+          `Error while fetching backends:\nstatus: ${response.status}\nmessage: ${response.statusText}`
+        );
       }
       return response.json();
-    }).catch(err => {
+    })
+    .catch((err) => {
       console.error(err);
       return [];
     });
 
-  backends.forEach(backend => {
+  backends.forEach((backend) => {
     backendSelector.add(new Option(backend.name, backend.name));
     fetch(backend.url)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error(`Error while fetching backend details:\nstatus: ${response.status}\nmessage: ${response.statusText}`);
+          throw new Error(
+            `Error while fetching backend details:\nstatus: ${response.status}\nmessage: ${response.statusText}`
+          );
         }
         return response.json();
       })
@@ -48,18 +53,20 @@ export async function configure_backends(editorAndLanguageClient: EditorAndLangu
           backend: backend,
           prefixMap: prefixMap,
           queries: queries,
-          default: backend.name === "Wikidata",
+          default: backend.name === 'Wikidata',
         };
         addBackend(editorAndLanguageClient.languageClient, config);
       });
   });
-  backendSelector.addEventListener("change", () => {
-    console.log("new selected element:", backendSelector.value);
-    editorAndLanguageClient.languageClient.sendNotification('qlueLs/updateDefaultBackend', {
-      backendName: backendSelector.value
-    }).catch((err) => {
-      console.error(err);
-    });
+  backendSelector.addEventListener('change', () => {
+    console.log('new selected element:', backendSelector.value);
+    editorAndLanguageClient.languageClient
+      .sendNotification('qlueLs/updateDefaultBackend', {
+        backendName: backendSelector.value,
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   });
 }
 

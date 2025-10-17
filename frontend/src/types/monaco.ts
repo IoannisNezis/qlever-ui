@@ -1,6 +1,6 @@
-import { Range } from "monaco-editor";
-import { MonacoLanguageClient } from "monaco-languageclient";
-import { EditorApp } from "monaco-languageclient/editorApp";
+import { Range } from 'monaco-editor';
+import { MonacoLanguageClient } from 'monaco-languageclient';
+import { EditorApp } from 'monaco-languageclient/editorApp';
 
 export interface Edit {
   /**
@@ -19,6 +19,6 @@ export interface Edit {
 }
 
 export interface EditorAndLanguageClient {
-  editorApp: EditorApp,
-  languageClient: MonacoLanguageClient
+  editorApp: EditorApp;
+  languageClient: MonacoLanguageClient;
 }

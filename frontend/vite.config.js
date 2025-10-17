@@ -14,15 +14,12 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   optimizeDeps: {
-    include: [
-      'vscode-textmate',
-      'vscode-oniguruma'
-    ]
+    include: ['vscode-textmate', 'vscode-oniguruma'],
   },
   server: {
     fs: {
-      strict: false
-    }
+      strict: false,
+    },
   },
   plugins: [tailwindcss()],
   assetsInclude: ['**/*yaml'],

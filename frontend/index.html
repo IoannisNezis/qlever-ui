@@ -10,8 +10,8 @@
   <body class="text-sm text-gray-700 flex flex-col min-h-screen">
     <div id="app" class="flex-1">
       <div class="bg-neutral-800 text-gray-300 h-14 px-20 lg:px-32 xl:px-72 flex items-center">
-        <div class="grid grid-cols-[4rem_auto_4rem] w-full flex items-center">
-          <span class="inline-flex items-center w-fit text-gray-400 text-lg">
+        <div class="grid grid-cols-[4rem_auto_4rem] w-full flex items-center text-gray-400">
+          <span class="inline-flex items-center w-fittext-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="text-green-600"
@@ -51,37 +51,28 @@
       </div>
       <div class="w-2/3 mt-5 mx-auto">
         <div class="flex flex-row justify-between">
-          <div class="border border-neutral-400 rounded w-fit px-3 py-0.5">
-            <span class="inline-flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="text-green-600"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-4 fill-current text-green-600 mr-1"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"
-                />
-              </svg>
-              Wikidata
-              <svg
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                data-slot="icon"
-                aria-hidden="true"
-                class="-mr-1 size-5 text-black"
-              >
-                <path
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </span>
+          <div
+            class="border border-neutral-400 rounded inline-flex items-center py-2 px-3 hover:bg-neutral-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="text-green-600"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4 fill-current text-green-600"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"
+              />
+            </svg>
+            <select
+              name="backendSelector"
+              id="backendSelector"
+              class="hover:cursor-pointer"
+            ></select>
           </div>
           <div class="flex flex-row">
             <div
@@ -419,6 +410,6 @@
         </a>
       </span>
     </footer>
-      <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -24,13 +24,13 @@ export function setup_key_bindings(editorApp: EditorApp, languageClient: MonacoL
     contextMenuGroupId: 'navigation',
     contextMenuOrder: 1.5,
     run() {
-      executeQuery(editorApp, languageClient)
-    }
+      executeQuery(editorApp, languageClient);
+    },
   });
 
   // NOTE format on Ctrl + f
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF, () => {
-    editor.getAction("editor.action.formatDocument")!.run();
+    editor.getAction('editor.action.formatDocument')!.run();
   });
 
   // NOTE:jump to next or prev position (Alt + n, Alt + p)
@@ -44,8 +44,8 @@ export function setup_key_bindings(editorApp: EditorApp, languageClient: MonacoL
           textDocument: { uri: editor.getModel()!.uri.toString() },
           options: {
             tabSize: 2,
-            insertSpaces: true
-          }
+            insertSpaces: true,
+          },
         })
         .then((response) => {
           const jumpResult = response as FormattingResult;
@@ -57,30 +57,30 @@ export function setup_key_bindings(editorApp: EditorApp, languageClient: MonacoL
                 edit.range.end.line + 1,
                 edit.range.end.character + 1
               ),
-              text: edit.newText
+              text: edit.newText,
             };
           });
           editor.getModel()!.applyEdits(edits);
 
           // NOTE: request jump position
           const cursorPosition = editor.getPosition()!;
-          languageClient.getLanguageClient()!
+          languageClient
+            .getLanguageClient()!
             .sendRequest('qlueLs/jump', {
               textDocument: { uri: editor.getModel()?.uri.toString() },
               position: {
                 line: cursorPosition.lineNumber - 1,
-                character: cursorPosition.column - 1
+                character: cursorPosition.column - 1,
               },
-              previous: args === 'prev'
+              previous: args === 'prev',
             })
             .then((response) => {
               // NOTE: move cursor
               if (response) {
-
                 const typedResponse = response as JumpResult;
                 const newCursorPosition = {
                   lineNumber: typedResponse.position.line + 1,
-                  column: typedResponse.position.character + 1
+                  column: typedResponse.position.character + 1,
                 };
                 if (typedResponse.insertAfter) {
                   editor.executeEdits('jumpToNextPosition', [
@@ -91,8 +91,8 @@ export function setup_key_bindings(editorApp: EditorApp, languageClient: MonacoL
                         newCursorPosition.lineNumber,
                         newCursorPosition.column
                       ),
-                      text: typedResponse.insertAfter
-                    }
+                      text: typedResponse.insertAfter,
+                    },
                   ]);
                 }
                 editor.setPosition(newCursorPosition, 'jumpToNextPosition');
@@ -105,24 +105,24 @@ export function setup_key_bindings(editorApp: EditorApp, languageClient: MonacoL
                         newCursorPosition.lineNumber,
                         newCursorPosition.column
                       ),
-                      text: typedResponse.insertBefore
-                    }
+                      text: typedResponse.insertBefore,
+                    },
                   ]);
                 }
               }
             });
         });
       editor.trigger('jumpToNextPosition', 'editor.action.formatDocument', {});
-    }
+    },
   });
   monaco.editor.addKeybindingRule({
     command: 'jumpToNextPosition',
     commandArgs: 'next',
-    keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.Comma
+    keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.Comma,
   });
   monaco.editor.addKeybindingRule({
     command: 'jumpToNextPosition',
     commandArgs: 'prev',
-    keybinding: monaco.KeyMod.Alt | monaco.KeyCode.Minus
+    keybinding: monaco.KeyMod.Alt | monaco.KeyCode.Minus,
   });
 }

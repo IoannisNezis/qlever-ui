@@ -4,14 +4,14 @@ export interface FormatSettings {
   separatePrologue: boolean;
   capitalizeKeywords: boolean;
   insertSpaces: boolean;
-  tabSize: number
+  tabSize: number;
   whereNewLine: boolean;
   filterSameLine: boolean;
 }
 
 export interface CompletionSettings {
-  timeoutMs: number
-  resultSizeLimit: number
+  timeoutMs: number;
+  resultSizeLimit: number;
 }
 
 export interface PrefixSettings {
@@ -20,8 +20,8 @@ export interface PrefixSettings {
 }
 
 export interface Replacement {
-  pattern: string,
-  replacement: string
+  pattern: string;
+  replacement: string;
 }
 
 export interface Replacements {
@@ -32,9 +32,8 @@ export interface Settings {
   format: FormatSettings;
   completion: CompletionSettings;
   prefixes: PrefixSettings;
-  replacements?: Replacements
+  replacements?: Replacements;
 }
-
 
 export interface MonacoSettings {
   vimMode: boolean;

@@ -4,7 +4,7 @@
 // │ Licensed under the MIT license. │ \\
 // └─────────────────────────────────┘ \\
 
-import './style.css'
+import './style.css';
 import * as monaco from 'monaco-editor';
 import { buildWrapperConfig } from './config/config';
 import { setup_key_bindings } from './keys';
@@ -17,43 +17,42 @@ import type { Edit } from '../types/monaco';
 import { MonacoLanguageClient } from 'monaco-languageclient';
 
 interface EditorAndLanguageClient {
-	editorApp: EditorApp,
-	languageClient: MonacoLanguageClient
+  editorApp: EditorApp;
+  languageClient: MonacoLanguageClient;
 }
 
 export async function init(container_id: string): Promise<EditorAndLanguageClient> {
-	const editorContainer = document.getElementById(container_id);
-	if (editorContainer) {
-		const configs = await buildWrapperConfig(editorContainer, "");
-		// Create the monaco-vscode api Wrapper and start it before anything else
-		const apiWrapper = new MonacoVscodeApiWrapper(configs.vscodeApiConfig);
-		await apiWrapper.start();
+  const editorContainer = document.getElementById(container_id);
+  if (editorContainer) {
+    const configs = await buildWrapperConfig(editorContainer, '');
+    // Create the monaco-vscode api Wrapper and start it before anything else
+    const apiWrapper = new MonacoVscodeApiWrapper(configs.vscodeApiConfig);
+    await apiWrapper.start();
 
-		// Create language client wrapper
-		const lcWrapper = new LanguageClientWrapper(configs.languageClientConfig);
-		await lcWrapper.start();
-		const languageClient = lcWrapper.getLanguageClient()!;
+    // Create language client wrapper
+    const lcWrapper = new LanguageClientWrapper(configs.languageClientConfig);
+    await lcWrapper.start();
+    const languageClient = lcWrapper.getLanguageClient()!;
 
-		// Create and start the editor app
-		const editorApp = new EditorApp(configs.editorAppConfig);
-		const htmlContainer = document.getElementById(container_id)!;
-		await editorApp.start(htmlContainer);
+    // Create and start the editor app
+    const editorApp = new EditorApp(configs.editorAppConfig);
+    const htmlContainer = document.getElementById(container_id)!;
+    await editorApp.start(htmlContainer);
 
-		setup_key_bindings(editorApp, languageClient);
-		setup_commands(editorApp);
-		setup_settings(editorApp, languageClient);
+    setup_key_bindings(editorApp, languageClient);
+    setup_commands(editorApp);
+    setup_settings(editorApp, languageClient);
 
-		editorContainer.style.removeProperty("display")
-		document.getElementById("loadingScreen")?.remove();
+    editorContainer.style.removeProperty('display');
+    document.getElementById('loadingScreen')?.remove();
 
-		editorApp.updateLayout();
+    editorApp.updateLayout();
 
-		return {
-			editorApp: editorApp,
-			languageClient: languageClient,
-		};
-	} else {
-		throw new Error(`No element with id: "${container_id}" found`);
-	}
+    return {
+      editorApp: editorApp,
+      languageClient: languageClient,
+    };
+  } else {
+    throw new Error(`No element with id: "${container_id}" found`);
+  }
 }
-

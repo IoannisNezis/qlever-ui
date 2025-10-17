@@ -1,38 +1,38 @@
 # A list of color names:
 
-'foreground'                       // Overall foreground color. This color is only used if not overridden by a component.
-'errorForeground'                  // Overall foreground color for error messages. This color is only used if not overridden by a component.
-'descriptionForeground'            // Foreground color for description text providing additional information, for example for a label.
-'focusBorder'                      // Overall border color for focused elements. This color is only used if not overridden by a component.
-'contrastBorder'                   // An extra border around elements to separate them from others for greater contrast.
-'contrastActiveBorder'             // An extra border around active elements to separate them from others for greater contrast.
-'selection.background'             // The background color of text selections in the workbench (e.g. for input fields or text areas). Note that this does not apply to selections within the editor.
-'textSeparator.foreground'         // Color for text separators.
-'textLink.foreground'              // Foreground color for links in text.
-'textLink.activeForeground'        // Foreground color for active links in text.
-'textPreformat.foreground'         // Foreground color for preformatted text segments.
-'textBlockQuote.background'        // Background color for block quotes in text.
-'textBlockQuote.border'            // Border color for block quotes in text.
-'textCodeBlock.background'         // Background color for code blocks in text.
-'widget.shadow'                    // Shadow color of widgets such as find/replace inside the editor.
-'input.background'                 // Input box background.
-'input.foreground'                 // Input box foreground.
-'input.border'                     // Input box border.
-'inputOption.activeBorder'         // Border color of activated options in input fields.
-'input.placeholderForeground'      // Input box foreground color for placeholder text.
-'inputValidation.infoBackground'   // Input validation background color for information severity.
-'inputValidation.infoBorder'       // Input validation border color for information severity.
+'foreground' // Overall foreground color. This color is only used if not overridden by a component.
+'errorForeground' // Overall foreground color for error messages. This color is only used if not overridden by a component.
+'descriptionForeground' // Foreground color for description text providing additional information, for example for a label.
+'focusBorder' // Overall border color for focused elements. This color is only used if not overridden by a component.
+'contrastBorder' // An extra border around elements to separate them from others for greater contrast.
+'contrastActiveBorder' // An extra border around active elements to separate them from others for greater contrast.
+'selection.background' // The background color of text selections in the workbench (e.g. for input fields or text areas). Note that this does not apply to selections within the editor.
+'textSeparator.foreground' // Color for text separators.
+'textLink.foreground' // Foreground color for links in text.
+'textLink.activeForeground' // Foreground color for active links in text.
+'textPreformat.foreground' // Foreground color for preformatted text segments.
+'textBlockQuote.background' // Background color for block quotes in text.
+'textBlockQuote.border' // Border color for block quotes in text.
+'textCodeBlock.background' // Background color for code blocks in text.
+'widget.shadow' // Shadow color of widgets such as find/replace inside the editor.
+'input.background' // Input box background.
+'input.foreground' // Input box foreground.
+'input.border' // Input box border.
+'inputOption.activeBorder' // Border color of activated options in input fields.
+'input.placeholderForeground' // Input box foreground color for placeholder text.
+'inputValidation.infoBackground' // Input validation background color for information severity.
+'inputValidation.infoBorder' // Input validation border color for information severity.
 'inputValidation.warningBackground' // Input validation background color for information warning.
-'inputValidation.warningBorder'    // Input validation border color for warning severity.
-'inputValidation.errorBackground'  // Input validation background color for error severity.
-'inputValidation.errorBorder'      // Input validation border color for error severity.
-'dropdown.background'              // Dropdown background.
-'dropdown.foreground'              // Dropdown foreground.
-'dropdown.border'                  // Dropdown border.
-'list.focusBackground'             // List/Tree background color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
-'list.focusForeground'             // List/Tree foreground color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
-'list.activeSelectionBackground'   // List/Tree background color for the selected item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
-'list.activeSelectionForeground'   // List/Tree foreground color for the selected item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
+'inputValidation.warningBorder' // Input validation border color for warning severity.
+'inputValidation.errorBackground' // Input validation background color for error severity.
+'inputValidation.errorBorder' // Input validation border color for error severity.
+'dropdown.background' // Dropdown background.
+'dropdown.foreground' // Dropdown foreground.
+'dropdown.border' // Dropdown border.
+'list.focusBackground' // List/Tree background color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
+'list.focusForeground' // List/Tree foreground color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
+'list.activeSelectionBackground' // List/Tree background color for the selected item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
+'list.activeSelectionForeground' // List/Tree foreground color for the selected item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
 'list.inactiveSelectionBackground' // List/Tree background color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not.
 'list.inactiveSelectionForeground' // List/Tree foreground color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not.
 'list.hoverBackground' // List/Tree background when hovering over items using the mouse.

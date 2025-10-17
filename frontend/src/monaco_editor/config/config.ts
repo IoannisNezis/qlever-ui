@@ -4,9 +4,12 @@
 // │ Licensed under the MIT license. │ \\
 // └─────────────────────────────────┘ \\
 
-
 // Import Monaco Language Client components
-import { configureDefaultWorkerFactory, useWorkerFactory, type WorkerLoader } from 'monaco-languageclient/workerFactory';
+import {
+  configureDefaultWorkerFactory,
+  useWorkerFactory,
+  type WorkerLoader,
+} from 'monaco-languageclient/workerFactory';
 import { type EditorAppConfig } from 'monaco-languageclient/editorApp';
 import { type MonacoVscodeApiConfig } from 'monaco-languageclient/vscodeApiWrapper';
 import { type LanguageClientConfig } from 'monaco-languageclient/lcwrapper';
@@ -21,12 +24,11 @@ import sparqlTheme from './sparql.theme.json?raw';
 import { Uri } from 'monaco-editor';
 import { LogLevel } from 'vscode';
 
-
 export async function buildWrapperConfig(container: HTMLElement, initial: string) {
   const workerPromise: Promise<Worker> = new Promise((resolve) => {
     const instance: Worker = new languageServerWorker({ name: 'Language Server' });
     instance.onmessage = (event) => {
-      if (event.data.type === "ready") {
+      if (event.data.type === 'ready') {
         resolve(instance);
       }
     };
@@ -36,21 +38,6 @@ export async function buildWrapperConfig(container: HTMLElement, initial: string
     TextEditorWorker: () => new editorWorker(),
     TextMateWorker: () => new TextMateWorker(),
   };
-  const configureWorkers = () => {
-    useWorkerFactory({ workerLoaders })
-  };
-
-  window.MonacoEnvironment = {
-    getWorker: function(moduleId, label): Worker {
-      console.log("Requested: ", moduleId);
-      const workerFactory = workerLoaders[label];
-      if (workerFactory != null) {
-        return workerFactory();
-      }
-      throw new Error(`Unimplemented worker ${label} (${moduleId})`);
-    }
-  };
-
   const extensionFilesOrContents = new Map<string, string | URL>();
   extensionFilesOrContents.set('/sparql-configuration.json', sparqlLanguageConfig);
   extensionFilesOrContents.set('/sparql-grammar.json', sparqlTextmateGrammar);
@@ -60,7 +47,7 @@ export async function buildWrapperConfig(container: HTMLElement, initial: string
   const vscodeApiConfig: MonacoVscodeApiConfig = {
     $type: 'extended',
     viewsConfig: {
-      $type: 'EditorService'
+      $type: 'EditorService',
     },
     logLevel: LogLevel.Debug,
     userConfiguration: {
@@ -73,71 +60,79 @@ export async function buildWrapperConfig(container: HTMLElement, initial: string
         'editor.tabSize': 2,
         'editor.insertSpaces': true,
         'editor.detectIndentation': false,
-        'files.eol': '\n'
-      })
+        'files.eol': '\n',
+      }),
     },
-    monacoWorkerFactory: configureWorkers,
-    extensions: [{
-      config: {
-        name: 'langium-sparql',
-        publisher: 'Ioannis Nezis',
-        version: '1.0.0',
-        engines: {
-          vscode: '*'
+    monacoWorkerFactory: (logger) => {
+      useWorkerFactory({ workerLoaders });
+    },
+    extensions: [
+      {
+        config: {
+          name: 'langium-sparql',
+          publisher: 'Ioannis Nezis',
+          version: '1.0.0',
+          engines: {
+            vscode: '*',
+          },
+          contributes: {
+            languages: [
+              {
+                id: 'sparql',
+                extensions: ['.rq'],
+                aliases: ['sparql', 'SPARQL'],
+                configuration: '/sparql-configuration.json',
+              },
+            ],
+            themes: [
+              {
+                id: 'QleverUiTheme',
+                label: 'Qlever-UI Custom Theme',
+                uiTheme: 'vs',
+                path: './sparql-theme.json',
+              },
+            ],
+            grammars: [
+              {
+                language: 'sparql',
+                scopeName: 'source.sparql',
+                path: '/sparql-grammar.json',
+              },
+            ],
+          },
         },
-        contributes: {
-          languages: [{
-            id: 'sparql',
-            extensions: ['.rq'],
-            aliases: ['sparql', 'SPARQL'],
-            configuration: '/sparql-configuration.json'
-          }],
-          themes: [
-            {
-              "id": "QleverUiTheme",
-              "label": "Qlever-UI Custom Theme",
-              "uiTheme": "vs",
-              "path": "./sparql-theme.json"
-            }
-          ],
-          grammars: [{
-            language: 'sparql',
-            scopeName: 'source.sparql',
-            path: '/sparql-grammar.json'
-          }]
-        }
+        filesOrContents: extensionFilesOrContents,
       },
-      filesOrContents: extensionFilesOrContents
-    }]
+    ],
   };
 
   // Language client configuration
   const languageClientConfig: LanguageClientConfig = {
-    languageId: "sparql",
+    languageId: 'sparql',
     clientOptions: {
       documentSelector: [{ language: 'sparql' }],
       workspaceFolder: {
         index: 0,
-        name: "workspace",
-        uri: Uri.parse("file:/"),
+        name: 'workspace',
+        uri: Uri.parse('file:/'),
       },
       progressOnInitialization: true,
       diagnosticPullOptions: {
         onChange: true,
-        onSave: false
+        onSave: false,
       },
     },
     connection: {
       options: {
         $type: 'WorkerDirect',
-        worker: worker
-      }
+        worker: worker,
+      },
     },
     restartOptions: {
       retries: 5,
       timeout: 1000,
-      keepWorker: true
-    }
+      keepWorker: true,
+    },
   };
 
   // editor app / monaco-editor configuration
@@ -145,38 +140,36 @@ export async function buildWrapperConfig(container: HTMLElement, initial: string
     codeResources: {
       modified: {
         uri: 'query.rq',
-        text: initial
-      }
+        text: initial,
+      },
     },
     editorOptions: {
-      tabCompletion: "on",
+      tabCompletion: 'on',
       suggestOnTriggerCharacters: true,
       fontSize: 14,
       fontFamily: 'Source Code Pro',
       links: false,
       minimap: {
-        enabled: false
+        enabled: false,
       },
       overviewRulerLanes: 0,
       scrollBeyondLastLine: false,
       padding: {
         top: 8,
-        bottom: 8
+        bottom: 8,
       },
       lineDecorationsWidth: 0,
       lineNumbersMinChars: 2,
       glyphMargin: true,
       contextmenu: false,
       folding: true,
-      foldingImportsByDefault: true
-
-    }
+      foldingImportsByDefault: true,
+    },
   };
 
   return {
     vscodeApiConfig: vscodeApiConfig,
     languageClientConfig: languageClientConfig,
-    editorAppConfig: editorAppConfig
+    editorAppConfig: editorAppConfig,
   };
 }
-
