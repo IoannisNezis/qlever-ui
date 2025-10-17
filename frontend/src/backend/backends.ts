@@ -4,77 +4,67 @@
 // │ Licensed under the MIT license. │ \\
 // └─────────────────────────────────┘ \\
 
-import type { BackendConfig } from "../types/backend";
+import type { BackendConfig } from '../types/backend';
 import yaml from 'yaml';
-import type { EditorAndLanguageClient } from "../types/monaco";
-import { MonacoLanguageClient } from "monaco-languageclient";
+import type { EditorAndLanguageClient } from '../types/monaco';
+import { MonacoLanguageClient } from 'monaco-languageclient';
 
 export async function configure_backends(editorAndLanguageClient: EditorAndLanguageClient) {
-  const slug = window.location.pathname.substr(1).split("/")[0];
-
-  const backends = await fetch("/api/backends/")
+  const backendSelector = document.getElementById("backendSelector") as HTMLSelectElement;
+  const backends = await fetch("http://127.0.0.1:8000/api/backends/")
     .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error while fetching backends:\nstatus: ${response.status}\nmessage: ${response.statusText}`);
+      }
       return response.json();
-    })
-    .then(json => {
-      return json
     }).catch(err => {
-      console.error("An error occured while fetching backends\n", err);
+      console.error(err);
+      return [];
     });
 
-  configureBackendsSelector(backends, slug);
-
-
-  backends.forEach(async (backend) => {
-    const config = await fetch(backend.url)
-      .then(response => response.json())
-      .then(json => {
+  backends.forEach(backend => {
+    backendSelector.add(new Option(backend.name, backend.name));
+    fetch(backend.url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error while fetching backend details:\nstatus: ${response.status}\nmessage: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((json) => {
         const backend = {
           name: json.name,
-          slug: json.slug,
           url: json.baseUrl,
         };
         const prefixMap = json.prefixMap;
         const queries = {
-          subjectCompletion: json["suggestSubjectsContextInsensitive"],
-          predicateCompletion: json["suggestObjectsContextInsensitive"],
-          objectCompletion: json["suggestObjectsContextInsensitive"],
-          predicateCompletionContextSensitive: json["suggestPredicates"],
-          objectCompletionContextSensitive: json["suggestObjects"]
+          subjectCompletion: json['suggestSubjectsContextInsensitive'],
+          predicateCompletion: json['suggestObjectsContextInsensitive'],
+          objectCompletion: json['suggestObjectsContextInsensitive'],
+          predicateCompletionContextSensitive: json['suggestPredicates'],
+          objectCompletionContextSensitive: json['suggestObjects'],
         };
-        return {
+        const config = {
           backend: backend,
           prefixMap: prefixMap,
           queries: queries,
-          default: backend.slug === slug
-        }
+          default: backend.name === "Wikidata",
+        };
+        addBackend(editorAndLanguageClient.languageClient, config);
       });
-    addBackend(editorAndLanguageClient.languageClient, config);
   });
-
+  backendSelector.addEventListener("change", () => {
+    console.log("new selected element:", backendSelector.value);
+    editorAndLanguageClient.languageClient.sendNotification('qlueLs/updateDefaultBackend', {
+      backendName: backendSelector.value
+    }).catch((err) => {
+      console.error(err);
+    });
+  });
 }
 
 function addBackend(languageClient: MonacoLanguageClient, conf: BackendConfig) {
-  languageClient
-    .sendRequest('qlueLs/addBackend', conf)
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
-
-export function configureBackendsSelector(backendConfigurations, slug) {
-  const backendsSelectionList = document.getElementById("backendSelectionList")!;
-  const backendsSelectionListButton = document.getElementById("backendDisplay")!;
-  backendConfigurations.forEach((backend) => {
-    const a = document.createElement("a");
-    a.textContent = backend.name;
-    a.href = `/${backend.slug}`;
-    const li = document.createElement("li");
-    li.appendChild(a);
-    backendsSelectionList.appendChild(li);
-    if (backend.slug === slug) {
-      backendsSelectionListButton.textContent = backend.name;
-    }
+  languageClient.sendNotification('qlueLs/addBackend', conf).catch((err) => {
+    console.error(err);
   });
 }
